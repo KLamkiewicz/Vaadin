@@ -1,0 +1,4 @@
+*.class
+*.war
+/.gwt-cache
+*.jar
