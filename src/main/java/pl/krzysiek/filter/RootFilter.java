@@ -23,8 +23,8 @@ public class RootFilter implements Filter{
 	}
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+		
 		HttpServletResponse response = (HttpServletResponse) resp;
 		response.sendRedirect("/main");
 		

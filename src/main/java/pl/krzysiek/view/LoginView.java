@@ -5,7 +5,9 @@ import pl.krzysiek.model.User;
 import pl.krzysiek.service.LoginService;
 
 import com.vaadin.data.Validator;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.AbstractValidator;
+import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
@@ -36,8 +38,10 @@ public class LoginView extends VerticalLayout {
 		private VerticalLayout v;
 		private Notification n;
 		private String invalid = "Invalid data";
+		private User user = new User();
 
 		public FormLayoutClass(){
+			BeanItem<User> item = new BeanItem<User>(user); 
 			n = new Notification(invalid);
 			n.setPosition(Position.TOP_CENTER);
 			v = new VerticalLayout();
@@ -47,12 +51,14 @@ public class LoginView extends VerticalLayout {
 	
 			username = new TextField("Username: ");
 			username.setRequired(true);
-			username.addValidator(new UsernameValidator());
+			username.addValidator(new BeanValidator(User.class, "username"));
+			username.setImmediate(true);
 			
 			password = new PasswordField("Password: ");
+			password.addValidator(new BeanValidator(User.class, "password"));
 			password.setRequired(true);
-			password.addValidator(new PasswordValidator());
-			
+			password.setImmediate(true);
+		
 			v.addComponent(username);
 			v.addComponent(password);
 			v.addComponent(loginButton);
@@ -62,7 +68,9 @@ public class LoginView extends VerticalLayout {
 				public void buttonClick(ClickEvent event) {
 					if(username.isValid() && password.isValid()){
 						if(LoginService.validCredentials(username.getValue(), password.getValue())){
-							VaadinSession.getCurrent().getSession().setAttribute("user", new User(username.getValue()));
+							System.out.println("logging in");
+							user.setUsername(username.getValue());
+							VaadinSession.getCurrent().getSession().setAttribute("user", user);
 							UI.getCurrent().getPage().setLocation("/");
 						}else{
 							n.setCaption("Username does not match the password");
@@ -77,26 +85,26 @@ public class LoginView extends VerticalLayout {
 		}
 	}
 	
-	private class UsernameValidator implements Validator{
-		@Override
-		public void validate(Object value) throws InvalidValueException {
-			String v = (String) value;
-			if(v.length()<3)
-				throw new InvalidValueException("Username too short");
-			if(v.length()>15)
-				throw new InvalidValueException("Username too long");
-		}
-	}
-	
-	private class PasswordValidator implements Validator{
-		@Override
-		public void validate(Object value) throws InvalidValueException {
-			String v = (String) value;
-			if(v.length()<3)
-				throw new InvalidValueException("Password too short");
-			if(v.length()>15)
-				throw new InvalidValueException("Password too long");
-		}
-	}
+//	private class UsernameValidator implements Validator{
+//		@Override
+//		public void validate(Object value) throws InvalidValueException {
+//			String v = (String) value;
+//			if(v.length()<3)
+//				throw new InvalidValueException("Username too short");
+//			if(v.length()>15)
+//				throw new InvalidValueException("Username too long");
+//		}
+//	}
+//	
+//	private class PasswordValidator implements Validator{
+//		@Override
+//		public void validate(Object value) throws InvalidValueException {
+//			String v = (String) value;
+//			if(v.length()<3)
+//				throw new InvalidValueException("Password too short");
+//			if(v.length()>15)
+//				throw new InvalidValueException("Password too long");
+//		}
+//	}
 
 }
