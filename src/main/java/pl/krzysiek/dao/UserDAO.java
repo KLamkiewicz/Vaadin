@@ -22,4 +22,8 @@ public class UserDAO {
 		}
 		return null;
 	}
+	
+	public void addUser(User u){
+		dataContainer.addUser(u);
+	}
 }

@@ -51,6 +51,9 @@ public class LoginView extends VerticalLayout {
 	
 			username = new TextField("Username: ");
 			username.setRequired(true);
+			
+			BeanValidator bv = new BeanValidator(User.class, "username");
+			
 			username.addValidator(new BeanValidator(User.class, "username"));
 			username.setImmediate(true);
 			

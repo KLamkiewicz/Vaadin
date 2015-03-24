@@ -6,12 +6,14 @@ import pl.krzysiek.model.User;
 import pl.krzysiek.view.LoginView;
 import pl.krzysiek.view.RegisterView;
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 
+@Theme("mytheme")
 public class RegisterUI extends UI {
 	private RegisterView registerView;
 

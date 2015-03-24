@@ -36,6 +36,12 @@ public class DataContainer {
 		}
 	}
 	
+	public void addUser(User u){
+		synchronized (dataLock) {
+			registeredUsers.add(u);		
+		}
+	}
+	
 	//Created predefined users for testing
 	public void loadTestUsers(){
 		User u1 = new User();

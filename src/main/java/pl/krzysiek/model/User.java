@@ -7,13 +7,16 @@ import javax.validation.constraints.Size;
 
 import org.atmosphere.config.service.Message;
 
+import pl.krzysiek.util.UserExists;
+
 public class User {
 
 	@NotNull
-	@Size(min=3, max=15, message="Login is 3-15 characters long")
+	@Size(min=3, max=15, message="Login must be 3-15 characters long")
+	//@UserExists(groups=Register.class)
 	private String username;
 	@NotNull
-	@Size(min=3, max=15, message="Password is 3-15 characters long")
+	@Size(min=3, max=15, message="Password must be 3-15 characters long")
 	private String password;
 	
 	public User(){
@@ -40,6 +43,5 @@ public class User {
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + "]";
 	}
-	
 	
 }

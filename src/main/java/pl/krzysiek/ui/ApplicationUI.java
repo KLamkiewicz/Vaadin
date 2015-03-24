@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 
 import pl.krzysiek.model.User;
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -15,7 +16,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
-@SuppressWarnings("serial")
+@Theme("mytheme")
 public class ApplicationUI extends UI{
 
 	@Override
