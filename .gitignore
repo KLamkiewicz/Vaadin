@@ -2,3 +2,4 @@
 *.war
 /.gwt-cache
 *.jar
+/target/

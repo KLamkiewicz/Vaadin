@@ -21,25 +21,11 @@ public class LoginUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		User u = null;
-		try {
-			VaadinSession.getCurrent().getLockInstance().lock();
-			u = (User) VaadinSession.getCurrent().getSession()
-					.getAttribute("user");
-			if (u!=null) {
-				UI.getCurrent().getPage().setLocation("/");
-			}
-		} finally {
-			VaadinSession.getCurrent().getLockInstance().unlock();
-		}
-
-		if (u==null) {
-			loginView = new LoginView();
-			setContent(loginView);
-		}
+		loginView = new LoginView();
+		setContent(loginView);
 	}
 
-	@WebServlet(value = "/login/*", asyncSupported = true)
+	@WebServlet(value = "/auth/login/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = LoginUI.class)
 	public static class Servlet extends VaadinServlet {
 

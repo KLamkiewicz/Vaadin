@@ -17,25 +17,11 @@ public class RegisterUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		User u = null;
-		try {
-			VaadinSession.getCurrent().getLockInstance().lock();
-			u = (User) VaadinSession.getCurrent().getSession()
-					.getAttribute("user");
-			if (u!=null) {
-				UI.getCurrent().getPage().setLocation("/");
-			}
-		} finally {
-			VaadinSession.getCurrent().getLockInstance().unlock();
-		}
-
-		if (u==null) {
-			registerView = new RegisterView();
-			setContent(registerView);
-		}
+		registerView = new RegisterView();
+		setContent(registerView);
 	}
-	
-	@WebServlet(value = "/register/*", asyncSupported = true)
+
+	@WebServlet(value = "/auth/register/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = RegisterUI.class)
 	public static class Servlet extends VaadinServlet {
 
