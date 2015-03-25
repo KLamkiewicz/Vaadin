@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pl.krzysiek.model.User;
+
 @WebFilter(value="/main/*")
 public class MainFilter implements Filter{
 
@@ -26,7 +28,7 @@ public class MainFilter implements Filter{
 		
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
-		System.out.println(request.getSession().getAttribute("user"));
+		request.getSession().setAttribute("user", new User("Krzys"));
 		if(request.getSession().getAttribute("user")==null){
 			response.sendRedirect("/auth/login");
 			return;

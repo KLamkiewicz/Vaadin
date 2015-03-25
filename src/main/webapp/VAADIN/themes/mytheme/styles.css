@@ -11814,3 +11814,11 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.mytheme .v-button {
+	color: blue;
+}
+
+.mytheme #labtest {
+	background-color: red;
+}

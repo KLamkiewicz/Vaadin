@@ -32,4 +32,12 @@
 @mixin mytheme {
   @include valo;
   // Insert your own theme rules here
+  .v-button {
+    color: blue;
+  }
+  
+  #labtest{
+  	background-color:red;
+  }
+
 }

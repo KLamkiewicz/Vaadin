@@ -58,11 +58,11 @@
 			no need for an explicit dependency. -->
 		<!-- <dependency> <groupId>com.vaadin</groupId> <artifactId>vaadin-client-compiler</artifactId> 
 			<version>${vaadin.version}</version> <scope>provided</scope> </dependency> -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiled</artifactId>
 			<version>${vaadin.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client</artifactId>
