@@ -33,6 +33,7 @@ public class LoginView extends VerticalLayout {
 
 	private class FormLayoutClass extends CustomComponent{
 		private Button loginButton;
+		private Button auth;
 		private TextField username;
 		private PasswordField password;
 		private VerticalLayout v;
@@ -41,6 +42,7 @@ public class LoginView extends VerticalLayout {
 		private User user = new User();
 
 		public FormLayoutClass(){
+			auth = new Button("Register page");
 			BeanItem<User> item = new BeanItem<User>(user); 
 			n = new Notification(invalid);
 			n.setPosition(Position.TOP_CENTER);
@@ -85,6 +87,16 @@ public class LoginView extends VerticalLayout {
 					}
 				}
 			});
+			
+			
+			auth.addClickListener(new Button.ClickListener() {
+				
+				@Override
+				public void buttonClick(ClickEvent event) {
+					UI.getCurrent().getPage().setLocation("/auth/register");
+				}
+			});
+			v.addComponent(auth);
 		}
 	}
 	

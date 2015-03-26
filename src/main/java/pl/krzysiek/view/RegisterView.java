@@ -28,6 +28,7 @@ public class RegisterView extends VerticalLayout {
 
 	private class FormLayoutClass extends CustomComponent {
 		private VerticalLayout v;
+		private Button auth;
 		private Button register;
 		private TextField username;
 		private PasswordField password;
@@ -36,6 +37,7 @@ public class RegisterView extends VerticalLayout {
 		private Notification n;
 
 		public FormLayoutClass() {
+			auth = new Button("Login page");
 			BeanItem<User> item = new BeanItem<User>(user);
 			n = new Notification("Passwords do not match");
 			n.setPosition(Position.TOP_CENTER);
@@ -77,6 +79,17 @@ public class RegisterView extends VerticalLayout {
 					}
 				}
 			});
+			
+			auth.addClickListener(new Button.ClickListener() {
+				
+				@Override
+				public void buttonClick(ClickEvent event) {
+					UI.getCurrent().getPage().setLocation("/auth/login");
+				}
+			});
+			v.addComponent(auth);
+			
+			
 		}
 
 		private class UsernameValidator implements Validator {

@@ -8,7 +8,7 @@ import pl.krzysiek.dao.UserDAO;
 import pl.krzysiek.model.Message;
 import pl.krzysiek.model.User;
 import pl.krzysiek.util.Broadcaster;
-import pl.krzysiek.view.UserRepositoryView;
+import pl.krzysiek.util.Replacer;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Push;
@@ -20,7 +20,11 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ClassResource;
+import com.vaadin.server.ErrorEvent;
+import com.vaadin.server.ErrorHandler;
 import com.vaadin.server.Page;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
@@ -29,6 +33,7 @@ import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.communication.PushMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
@@ -52,15 +57,13 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 	private Chat chatView;
 	private TextField input = new TextField();
 	private User user;
-
+	
 	@Override
 	protected void init(VaadinRequest request) {
-		user = ((User) VaadinSession.getCurrent().getSession()
-				.getAttribute("user"));
+		user = ((User) VaadinSession.getCurrent().getSession().getAttribute("user"));
 		mainLayout = new HorizontalLayout();
 		mainContent = new VerticalLayout();
 		menuView = new MenuView();
-		// chatView = new ChatView(this);
 
 		mainView = new MainView();
 		otherView = new OtherView();
@@ -73,20 +76,26 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 		setContent(mainLayout);
 		Broadcaster.register(this);
 	}
+	
+	@WebServlet(value = { "/VAADIN/*", "/main/*" }, asyncSupported = true)
+	@VaadinServletConfiguration(productionMode = false, ui = ApplicationUI.class)
+	public static class Servlet extends VaadinServlet {
+
+	}
 
 	private class MenuView extends VerticalLayout {
 		public MenuView() {
-			addComponent(new Label("dd"));
+			//addComponent(new Label("dd"));
 			Button b = new Button("Logout");
 			b.addClickListener(new LogoutButton());
-			Button c = new Button("Change");
+			Button c = new Button("Chat");
 			c.addClickListener(new ChangeButton());
 			Button d = new Button("Main page");
 			d.addClickListener(new MainPageButton());
-			addComponent(b);
-			addComponent(c);
+			//addComponent(b);
 			addComponent(d);
-			addComponent(input);
+			addComponent(c);
+			//addComponent(input);
 		}
 
 	}
@@ -162,12 +171,6 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 		}
 	}
 
-	@WebServlet(value = { "/VAADIN/*", "/main/*" }, asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = ApplicationUI.class)
-	public static class Servlet extends VaadinServlet {
-
-	}
-
 	@Override
 	public void detach() {
 		Broadcaster.unregister(this);
@@ -221,6 +224,7 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 					input.setValue("");
 				}else{
 					new Notification("Message cannot be empty!").show(Page.getCurrent());
+					
 				}
 			}
 		}
@@ -235,7 +239,7 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 
 				//Append message and assign listener
 				handleMessage(message);
-				
+
 				//Scroll down on every message
                 int messageCount = chatView.vPanel.getComponentCount();
                 chatView.chatContentPanel.setScrollTop(100*messageCount);
@@ -248,12 +252,12 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 		final VerticalLayout windowLayout = new VerticalLayout();
 		final Window window = new Window();
 		final HorizontalLayout h = new HorizontalLayout();
-		final Label label = new Label(message.getUsername() + ": " +message.getMessage());
-		h.addComponent(label);
+		//Message
+		//final Label label = new Label(message.getUsername() + ": " +message.getMessage());
+		h.addComponent(Replacer.replace(message));
 		chatView.vPanel.addComponent(h);
 		window.setWidth(300f, Unit.PIXELS);
 		window.setContent(windowLayout);
-		
 		h.addLayoutClickListener(new LayoutClickListener() {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
@@ -261,11 +265,15 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 				windowLayout.addComponent(new Label("Username: " + message.getUsername()));
 				windowLayout.addComponent(new Label("Number of messages: " + (new UserDAO().getNumberOfMessages(message.getUsername()))));
 
+				if(!UI.getCurrent().getWindows().isEmpty()){
+					for(Window w : UI.getCurrent().getWindows()){
+						w.close();
+					}
+				}
 				UI.getCurrent().addWindow(window);
-				System.out.println("CLICKED");
-				System.out.println(message.getUsername());
 			}
 		});
+		
 	}
 
 }
