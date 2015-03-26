@@ -26,4 +26,29 @@ public class UserDAO {
 	public void addUser(User u){
 		dataContainer.addUser(u);
 	}
+	
+	public int getNumberOfMessages(String username){
+		List<User> list = dataContainer.getUsers();
+		synchronized (list) {
+			for(User u : dataContainer.getUsers()){
+				System.out.println(u);
+				if(u.getUsername().equals(username)){
+					return u.getMessages();
+				}
+			}
+		}
+		return 0;
+	}
+	
+	public void addMessageCount(String username){
+		List<User> list = dataContainer.getUsers();
+		synchronized (list) {
+			for(User u : dataContainer.getUsers()){
+				System.out.println(u);
+				if(u.getUsername().equals(username)){
+					u.addCount();
+				}
+			}
+		}
+	}
 }

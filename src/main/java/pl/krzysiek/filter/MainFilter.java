@@ -16,7 +16,7 @@ import pl.krzysiek.model.User;
 
 @WebFilter(value="/main/*")
 public class MainFilter implements Filter{
-
+	public int a = 0;
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -25,10 +25,15 @@ public class MainFilter implements Filter{
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+		a++;
+		
 		
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
-		request.getSession().setAttribute("user", new User("Krzys"));
+//		if(a%2==0 && a%4==0)
+			request.getSession().setAttribute("user", new User("Krzys"));
+//		else
+//			request.getSession().setAttribute("user", new User("Adam"));
 		if(request.getSession().getAttribute("user")==null){
 			response.sendRedirect("/auth/login");
 			return;

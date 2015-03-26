@@ -1,5 +1,8 @@
 package pl.krzysiek.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -18,6 +21,7 @@ public class User {
 	@NotNull
 	@Size(min=3, max=15, message="Password must be 3-15 characters long")
 	private String password;
+	private int messages = 0;
 	
 	public User(){
 		
@@ -27,6 +31,18 @@ public class User {
 		this.username = username;
 	}
 	
+	
+	public int getMessages() {
+		return messages;
+	}
+
+	public void setMessages(int messages) {
+		this.messages = messages;
+	}
+
+	public void addCount(){
+		this.messages++;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -39,6 +55,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + "]";

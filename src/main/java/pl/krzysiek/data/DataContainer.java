@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Collections;
-import javax.sound.sampled.DataLine;
-
 
 import pl.krzysiek.model.User;
 
@@ -48,12 +46,14 @@ public class DataContainer {
 		User u2 = new User();
 		User u3 = new User();
 		
+		
 		u1.setUsername("Adam");
 		u1.setPassword("Haslo");
 		u2.setUsername("Krzys");
 		u2.setPassword("haslo");
 		u3.setUsername("Test");
 		u3.setPassword("ppr");
+
 		
 		registeredUsers.add(u1);
 		registeredUsers.add(u2);
