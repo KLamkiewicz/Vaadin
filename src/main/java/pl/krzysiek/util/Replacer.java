@@ -21,7 +21,9 @@ public class Replacer {
 	private enum Faces{
 		SMILEY(":)", ":\\)","images/smiley.jpg"),
 		SMILEY2(":D", ":D","images/smiley2.jpg"),
-		SMILEY3(";)", ";\\)", "images/smiley3.jpg");
+		SMILEY3(";)", ";\\)", "images/smiley3.jpg"),
+		SMILEY4(":(", ":\\(", "images/smiley4.jpg"),
+		SMILEY5(";(", ";\\(", "images/smiley5.jpg");
 		
 		private final String face;
 		private final String regex;
@@ -32,8 +34,9 @@ public class Replacer {
 			this.regex = regex;
 			this.location = location;
 		}
-		
 	}
+		
+	
 
 	public static HorizontalLayout replace(Message message){
 		final HorizontalLayout hl = new HorizontalLayout();

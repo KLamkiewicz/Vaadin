@@ -31,7 +31,7 @@ public class MainFilter implements Filter{
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 //		if(a%2==0 && a%4==0)
-//			request.getSession().setAttribute("user", new User("Krzys"));
+			request.getSession().setAttribute("user", new User("Krzys"));
 //		else
 //			request.getSession().setAttribute("user", new User("Adam"));
 		if(request.getSession().getAttribute("user")==null){

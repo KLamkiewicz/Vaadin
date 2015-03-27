@@ -43,6 +43,12 @@
 	</pluginRepositories>
 	<dependencies>
 		<dependency>
+			<groupId>com.vaadin.addon</groupId>
+			<artifactId>vaadin-charts</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
 			<version>${vaadin.version}</version>

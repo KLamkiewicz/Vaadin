@@ -1,5 +1,7 @@
 package pl.krzysiek.dao;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import pl.krzysiek.data.DataContainer;
@@ -12,14 +14,12 @@ public class UserDAO {
 	
 	public User getUser(String name){
 		List<User> list = dataContainer.getUsers();
-		synchronized (list) {
 			for(User u : dataContainer.getUsers()){
 				System.out.println(u);
 				if(u.getUsername().equals(name)){
 					return u;
 				}
 			}
-		}
 		return null;
 	}
 	
@@ -29,26 +29,39 @@ public class UserDAO {
 	
 	public int getNumberOfMessages(String username){
 		List<User> list = dataContainer.getUsers();
-		synchronized (list) {
 			for(User u : dataContainer.getUsers()){
 				System.out.println(u);
 				if(u.getUsername().equals(username)){
 					return u.getMessages();
 				}
 			}
-		}
 		return 0;
 	}
 	
 	public void addMessageCount(String username){
 		List<User> list = dataContainer.getUsers();
-		synchronized (list) {
 			for(User u : dataContainer.getUsers()){
 				System.out.println(u);
 				if(u.getUsername().equals(username)){
 					u.addCount();
 				}
 			}
-		}
+	}
+	
+	public List<User> getTopPosters(){
+		List<User> list = dataContainer.getUsers();
+		
+		list.sort(new Comparator<User>() {
+			@Override
+			public int compare(User o1, User o2) {
+				if(o1.getMessages()>=o2.getMessages()){
+					return -1;
+				}else{
+					return 1;
+				}
+			}
+		});
+
+		return list;
 	}
 }

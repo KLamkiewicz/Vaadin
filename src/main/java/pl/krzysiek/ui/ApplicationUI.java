@@ -9,6 +9,7 @@ import pl.krzysiek.model.Message;
 import pl.krzysiek.model.User;
 import pl.krzysiek.util.Broadcaster;
 import pl.krzysiek.util.Replacer;
+import pl.krzysiek.view.TopPostersView;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Push;
@@ -41,6 +42,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Window;
 
 @Theme("mytheme")
@@ -78,7 +80,7 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 	}
 	
 	@WebServlet(value = { "/VAADIN/*", "/main/*" }, asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = ApplicationUI.class)
+	@VaadinServletConfiguration(productionMode = false, ui = ApplicationUI.class, widgetset="pl.krzysiek.AppWidgetSet")
 	public static class Servlet extends VaadinServlet {
 
 	}
@@ -92,9 +94,12 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 			c.addClickListener(new ChangeButton());
 			Button d = new Button("Main page");
 			d.addClickListener(new MainPageButton());
+			Button topUsers = new Button("Top");
+			topUsers.addClickListener(new TopUsersButton());
 			//addComponent(b);
 			addComponent(d);
 			addComponent(c);
+			addComponent(topUsers);
 			//addComponent(input);
 		}
 
@@ -169,6 +174,17 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 		public void buttonClick(ClickEvent event) {
 			navigator.navigateTo("");
 		}
+	}
+	
+	public class TopUsersButton implements Button.ClickListener {
+
+		@Override
+		public void buttonClick(ClickEvent event) {
+			navigator.addView("Top", new TopPostersView());
+			navigator.navigateTo("Top");
+
+		}
+
 	}
 
 	@Override

@@ -49,10 +49,13 @@ public class DataContainer {
 		
 		u1.setUsername("Adam");
 		u1.setPassword("Haslo");
+		u1.setMessages(50);
 		u2.setUsername("Krzys");
 		u2.setPassword("haslo");
+		u2.setMessages(35);
 		u3.setUsername("Test");
 		u3.setPassword("ppr");
+		u3.setMessages(45);
 
 		
 		registeredUsers.add(u1);
