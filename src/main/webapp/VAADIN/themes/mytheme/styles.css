@@ -11822,3 +11822,7 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme #labtest {
 	background-color: red;
 }
+
+.mytheme .test {
+	background-color: red;
+}

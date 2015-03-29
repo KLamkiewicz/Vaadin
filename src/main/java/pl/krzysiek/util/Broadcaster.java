@@ -12,7 +12,6 @@ public class Broadcaster implements Serializable {
     static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public interface BroadcastListener {
-        //void receiveBroadcast(String message);
         void receiveBroadcast(Message message);
     }
     
@@ -25,16 +24,6 @@ public class Broadcaster implements Serializable {
     public static synchronized void unregister(BroadcastListener listener) {
         listeners.remove(listener);
     }
-    
-//    public static synchronized void broadcast(final String message) {
-//        for (final BroadcastListener listener: listeners)
-//            executorService.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    listener.receiveBroadcast(message);
-//                }
-//            });
-//    }
     
     public static synchronized void broadcastMessage(final Message message) {
         for (final BroadcastListener listener: listeners)

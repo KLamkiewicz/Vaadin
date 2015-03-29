@@ -9,6 +9,7 @@ import pl.krzysiek.model.Message;
 import pl.krzysiek.model.User;
 import pl.krzysiek.util.Broadcaster;
 import pl.krzysiek.util.Replacer;
+import pl.krzysiek.view.Chat;
 import pl.krzysiek.view.TopPostersView;
 
 import com.vaadin.annotations.PreserveOnRefresh;
@@ -52,55 +53,62 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 
 	private Navigator navigator;
 	private MainView mainView;
-	private OtherView otherView;
 	private VerticalLayout mainContent;
 	private HorizontalLayout mainLayout;
 	private MenuView menuView;
 	private Chat chatView;
 	private TextField input = new TextField();
 	private User user;
-	
+
 	@Override
 	protected void init(VaadinRequest request) {
-		user = ((User) VaadinSession.getCurrent().getSession().getAttribute("user"));
+		user = ((User) VaadinSession.getCurrent().getSession()
+				.getAttribute("user"));
+		
 		mainLayout = new HorizontalLayout();
 		mainContent = new VerticalLayout();
 		menuView = new MenuView();
+		chatView = new Chat();
 
 		mainView = new MainView();
-		otherView = new OtherView();
-
 		navigator = new Navigator(this, mainContent);
-		navigator.addView("", mainView);
+		navigator.addView("", mainView); // MainView
 		mainLayout.addComponent(menuView);
 		mainLayout.addComponent(mainContent);
-
+		
+		
+		menuView.setWidth("200px");
+		//menuView.addStyleName("test");
+		
+		
+		
 		setContent(mainLayout);
 		Broadcaster.register(this);
 	}
-	
+
 	@WebServlet(value = { "/VAADIN/*", "/main/*" }, asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = ApplicationUI.class, widgetset="pl.krzysiek.AppWidgetSet")
+	@VaadinServletConfiguration(productionMode = false, ui = ApplicationUI.class, widgetset = "pl.krzysiek.AppWidgetSet")
 	public static class Servlet extends VaadinServlet {
 
 	}
 
 	private class MenuView extends VerticalLayout {
 		public MenuView() {
-			//addComponent(new Label("dd"));
-			Button b = new Button("Logout");
-			b.addClickListener(new LogoutButton());
-			Button c = new Button("Chat");
-			c.addClickListener(new ChangeButton());
-			Button d = new Button("Main page");
-			d.addClickListener(new MainPageButton());
+			// Button logout = new Button("Logout");
+			// logout.addClickListener(new LogoutButton());
+
+			Button chatButton = new Button("Chat");
+			chatButton.addClickListener(new ChangeButton());
+			addComponent(chatButton);
+
+			Button mainPageButton = new Button("Main page");
+			mainPageButton.addClickListener(new MainPageButton());
+			addComponent(mainPageButton);
+
 			Button topUsers = new Button("Top");
 			topUsers.addClickListener(new TopUsersButton());
-			//addComponent(b);
-			addComponent(d);
-			addComponent(c);
 			addComponent(topUsers);
-			//addComponent(input);
+
 		}
 
 	}
@@ -122,48 +130,24 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 		}
 	}
 
-	private class OtherView extends VerticalLayout implements View {
-		public OtherView() {
-			Label lab = new Label("OTTER VIEW");
-			lab.setId("labtrest");
-			addComponent(new Label("mainzxzx view"));
-			addComponent(lab);
-		}
-
-		@Override
-		public void enter(ViewChangeEvent event) {
-		}
-	}
-
 	private class LogoutButton implements Button.ClickListener {
 		@Override
 		public void buttonClick(ClickEvent event) {
 			// // VaadinSession.getCurrent().getSession().setAttribute("user",
 			// null);
 			// // VaadinSession.getCurrent().close();
-			// // Page.getCurrent().setLocation("/auth/login");
-			//
-			// for( final UI ui : VaadinSession.getCurrent().getUIs() ) {
-			// ui.access(new Runnable() {
-			// @Override
-			// public void run() {
-			// //ui.getPushConfiguration().setPushMode(PushMode.DISABLED);
-			// ui.getPushConnection().disconnect();
-			// }
-			// });
-			// }
-			// VaadinSession.getCurrent().getSession().setAttribute("user",
-			// null);
+			// // Page.getCurrent().setLocation("/auth/login");;
 			// VaadinSession.getCurrent().getSession().invalidate();
 		}
 	}
 
+	//Menu buttons
 	private class ChangeButton implements Button.ClickListener {
 
 		@Override
 		public void buttonClick(ClickEvent event) {
-			chatView = new Chat();
-			chatView.setHeight("100%");
+			// chatView = new Chat();
+			// chatView.setHeight("100%");
 			navigator.addView("Chat", chatView);
 			navigator.navigateTo("Chat");
 		}
@@ -175,101 +159,23 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 			navigator.navigateTo("");
 		}
 	}
-	
+
 	public class TopUsersButton implements Button.ClickListener {
 
 		@Override
 		public void buttonClick(ClickEvent event) {
 			navigator.addView("Top", new TopPostersView());
 			navigator.navigateTo("Top");
-
-		}
-
-	}
-
-	@Override
-	public void detach() {
-		Broadcaster.unregister(this);
-		super.detach();
-	}
-	
-	private class Chat extends VerticalLayout implements View {
-		private TextField input;
-		private Panel chatContentPanel;
-		private VerticalLayout chatContent;
-		private VerticalLayout chatControl;
-		private VerticalLayout vPanel;
-		
-		public Chat() {
-			chatContentPanel = new Panel();
-			chatContent = new VerticalLayout();
-			chatControl = new VerticalLayout();
-			vPanel = new VerticalLayout();
-			
-			chatContentPanel.setContent(chatContent);
-			chatContentPanel.setContent(vPanel);
-			chatContentPanel.setHeight("500px");
-			chatContentPanel.setWidth("800px");
-			input = new TextField();
-			chatControl.addComponent(input);
-			Button sendButton = new Button("Send message");
-			sendButton.setClickShortcut(KeyCode.ENTER);
-			sendButton.addClickListener(new SendMessageButton());
-			chatControl.addComponent(sendButton);
-			
-			addComponent(chatContentPanel);
-			addComponent(chatContent);
-			addComponent(chatControl);
-
-		}
-
-		@Override
-		public void enter(ViewChangeEvent event) {
-		}
-
-		private class SendMessageButton implements Button.ClickListener {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				if (input.getValue() != "") {
-					Message message = new Message();
-					message.setUsername(user.getUsername());
-					message.setMessage(input.getValue());
-					
-					new UserDAO().addMessageCount(user.getUsername());
-					Broadcaster.broadcastMessage(message);
-					input.setValue("");
-				}else{
-					new Notification("Message cannot be empty!").show(Page.getCurrent());
-					
-				}
-			}
 		}
 	}
 
-	@Override
-	public void receiveBroadcast(final Message message) {
-		// Must lock the session to execute logic safely
-		access(new Runnable() {
-			@Override
-			public void run() {
-
-				//Append message and assign listener
-				handleMessage(message);
-
-				//Scroll down on every message
-                int messageCount = chatView.vPanel.getComponentCount();
-                chatView.chatContentPanel.setScrollTop(100*messageCount);
-			}
-		});
-		
-	}
-
-	public void handleMessage(final Message message){
+	public void handleMessage(final Message message) {
 		final VerticalLayout windowLayout = new VerticalLayout();
 		final Window window = new Window();
 		final HorizontalLayout h = new HorizontalLayout();
-		//Message
-		//final Label label = new Label(message.getUsername() + ": " +message.getMessage());
+		// Message
+		// final Label label = new Label(message.getUsername() + ": "
+		// +message.getMessage());
 		h.addComponent(Replacer.replace(message));
 		chatView.vPanel.addComponent(h);
 		window.setWidth(300f, Unit.PIXELS);
@@ -278,18 +184,43 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				windowLayout.removeAllComponents();
-				windowLayout.addComponent(new Label("Username: " + message.getUsername()));
-				windowLayout.addComponent(new Label("Number of messages: " + (new UserDAO().getNumberOfMessages(message.getUsername()))));
+				windowLayout.addComponent(new Label("Username: "
+						+ message.getUsername()));
+				windowLayout.addComponent(new Label("Number of messages: "
+						+ (new UserDAO().getNumberOfMessages(message
+								.getUsername()))));
 
-				if(!UI.getCurrent().getWindows().isEmpty()){
-					for(Window w : UI.getCurrent().getWindows()){
+				if (!UI.getCurrent().getWindows().isEmpty()) {
+					for (Window w : UI.getCurrent().getWindows()) {
 						w.close();
 					}
 				}
 				UI.getCurrent().addWindow(window);
 			}
 		});
-		
+
+	}
+
+	@Override
+	public void receiveBroadcast(final Message message) {
+		// Must lock the session to execute logic safely
+		access(new Runnable() {
+			@Override
+			public void run() {
+				// Append message and assign listener
+				handleMessage(message);
+				// Scroll down on every message
+				int messageCount = chatView.vPanel.getComponentCount();
+				chatView.chatContentPanel.setScrollTop(100 * messageCount);
+			}
+		});
+
+	}
+
+	@Override
+	public void detach() {
+		Broadcaster.unregister(this);
+		super.detach();
 	}
 
 }
