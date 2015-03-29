@@ -4,6 +4,7 @@ import pl.krzysiek.data.DataContainer;
 import pl.krzysiek.model.User;
 import pl.krzysiek.service.LoginService;
 
+import com.vaadin.client.ui.layout.Margins;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.AbstractValidator;
@@ -13,6 +14,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -42,11 +44,15 @@ public class LoginView extends VerticalLayout {
 		private User user = new User();
 
 		public FormLayoutClass(){
+			//addStyleName("loginStyle");
+
+			setMargin(new MarginInfo(true, true, true, true));
 			auth = new Button("Register page");
 			BeanItem<User> item = new BeanItem<User>(user); 
 			n = new Notification(invalid);
 			n.setPosition(Position.TOP_CENTER);
 			v = new VerticalLayout();
+			v.addStyleName("loginregisterStyle");
 			setCompositionRoot(v);
 			
 			loginButton = new Button("Log me in!");

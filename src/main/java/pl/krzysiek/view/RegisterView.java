@@ -11,6 +11,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Notification;
@@ -37,11 +38,13 @@ public class RegisterView extends VerticalLayout {
 		private Notification n;
 
 		public FormLayoutClass() {
+			setMargin(new MarginInfo(true, true, true, true));
 			auth = new Button("Login page");
 			BeanItem<User> item = new BeanItem<User>(user);
 			n = new Notification("Passwords do not match");
 			n.setPosition(Position.TOP_CENTER);
 			v = new VerticalLayout();
+			v.addStyleName("loginregisterStyle");
 			setCompositionRoot(v);
 			register = new Button("Register");
 			username = new TextField("Username: ");

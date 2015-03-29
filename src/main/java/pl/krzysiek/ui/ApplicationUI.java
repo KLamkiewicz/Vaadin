@@ -99,14 +99,18 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 
 			Button chatButton = new Button("Chat");
 			chatButton.addClickListener(new ChangeButton());
+			chatButton.setWidth("130px");
+			//chatButton.addStyleName("buttonStyleMenu");
 			addComponent(chatButton);
 
 			Button mainPageButton = new Button("Main page");
 			mainPageButton.addClickListener(new MainPageButton());
+			mainPageButton.setWidth("130px");
 			addComponent(mainPageButton);
 
 			Button topUsers = new Button("Top");
 			topUsers.addClickListener(new TopUsersButton());
+			topUsers.setWidth("130px");
 			addComponent(topUsers);
 
 		}
@@ -115,12 +119,13 @@ public class ApplicationUI extends UI implements Broadcaster.BroadcastListener {
 
 	private class MainView extends VerticalLayout implements View {
 		public MainView() {
-			Label l = new Label(((User) VaadinSession.getCurrent().getSession()
+			Label l = new Label("Welcome " + ((User) VaadinSession.getCurrent().getSession()
 					.getAttribute("user")).getUsername());
-			Label lab = new Label("main view lab");
-			lab.setId("labtest");
-			addComponent(new Label("main view"));
-			addComponent(lab);
+//			Label lab = new Label("main view lab");
+//			lab.setId("labtest");
+//			addComponent(new Label("main view"));
+//			addComponent(lab);
+//			l.setId("butr");
 			addComponent(l);
 		}
 

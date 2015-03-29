@@ -15,7 +15,6 @@ public class UserDAO {
 	public User getUser(String name){
 		List<User> list = dataContainer.getUsers();
 			for(User u : dataContainer.getUsers()){
-				System.out.println(u);
 				if(u.getUsername().equals(name)){
 					return u;
 				}
@@ -30,7 +29,6 @@ public class UserDAO {
 	public int getNumberOfMessages(String username){
 		List<User> list = dataContainer.getUsers();
 			for(User u : dataContainer.getUsers()){
-				System.out.println(u);
 				if(u.getUsername().equals(username)){
 					return u.getMessages();
 				}
@@ -41,7 +39,6 @@ public class UserDAO {
 	public void addMessageCount(String username){
 		List<User> list = dataContainer.getUsers();
 			for(User u : dataContainer.getUsers()){
-				System.out.println(u);
 				if(u.getUsername().equals(username)){
 					u.addCount();
 				}
